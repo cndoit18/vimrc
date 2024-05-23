@@ -1,0 +1,38 @@
+
+call plug#begin()
+Plug 'tpope/vim-eunuch'
+Plug 'yegappan/mru'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'preservim/nerdtree'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
+call plug#end()
+
+syntax enable
+set encoding=utf-8
+set number
+set nobackup
+set nocompatible
+let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go']
+
+" GoTo code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.vim/undodir
+  if !isdirectory(&undodir)
+    call mkdir(&undodir, 'p', 0700)
+  endif
+endif
+
+if has('mouse')
+  if has('gui_running') || (&term =~ 'xterm' && !has('mac'))
+    set mouse=a
+  else
+    set mouse=nvi
+  endif
+endif
+
