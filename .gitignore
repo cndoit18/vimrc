@@ -19,6 +19,7 @@ tags
 [._]*.un~
 
 
+vim/autoload/**
 vim/plugged/**
 vim/undodir/**
 
