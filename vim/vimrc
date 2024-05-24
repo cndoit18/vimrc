@@ -20,6 +20,7 @@ set nocompatible
 let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go']
 
 " GoTo code navigation
+nmap <silent> K :call CocActionAsync('doHover')<CR>
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
