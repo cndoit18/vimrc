@@ -9,6 +9,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'yegappan/mru'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
+Plug 'liuchengxu/vista.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
 call plug#end()
 
@@ -18,6 +19,7 @@ set number
 set nobackup
 set nocompatible
 let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go']
+let g:vista#renderer#enable_icon = 0
 
 " GoTo code navigation
 nmap <silent> K :call CocActionAsync('doHover')<CR>
