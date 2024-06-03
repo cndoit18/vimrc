@@ -23,7 +23,7 @@ set encoding=utf-8
 set number
 set nobackup
 set nocompatible
-let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go']
+let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go', 'coc-vimlsp']
 let g:vista#renderer#enable_icon = 0
 
 " vim-gitgutter used to do this by default:
