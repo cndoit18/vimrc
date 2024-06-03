@@ -22,14 +22,17 @@ let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go']
 let g:vista#renderer#enable_icon = 0
 
 " GoTo code navigation
-nmap <silent> K :call CocActionAsync('doHover')<CR>
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-nmap <leader> ac <Plug>(coc-codeaction)
+nmap <silent>K :call CocActionAsync('doHover')<CR>
+nmap <silent>gd <Plug>(coc-definition)
+nmap <silent>gy <Plug>(coc-type-definition)
+nmap <silent>gi <Plug>(coc-implementation)
+nmap <silent>gr <Plug>(coc-references)
+nmap <silent>[g <Plug>(coc-diagnostic-prev)
+nmap <silent>]g <Plug>(coc-diagnostic-next)
+nmap <leader>ac <Plug>(coc-codeaction)
+
+nnoremap <leader>nf :NERDTreeFocus<CR>
+nnoremap <leader>nt :NERDTreeToggle<CR>
 
 if has('persistent_undo')
   set undofile
