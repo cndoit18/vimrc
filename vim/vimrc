@@ -14,6 +14,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
 Plug 'liuchengxu/vista.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 syntax enable
@@ -23,6 +24,16 @@ set nobackup
 set nocompatible
 let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go']
 let g:vista#renderer#enable_icon = 0
+
+" vim-gitgutter used to do this by default:
+highlight! link SignColumn LineNr
+let g:gitgutter_override_sign_column_highlight = 1
+set updatetime=250
+
+if has('termguicolors') && ($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
+  " enable true color
+  set termguicolors
+endif
 
 " GoTo code navigation
 nmap <silent>K :call CocActionAsync('doHover')<CR>
