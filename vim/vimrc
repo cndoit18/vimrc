@@ -19,6 +19,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'sainnhe/gruvbox-material'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 call plug#end()
 
 syntax enable
