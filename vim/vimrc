@@ -21,6 +21,8 @@ Plug 'sainnhe/gruvbox-material'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'yianwillis/vimcdoc'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 call plug#end()
 
 syntax enable

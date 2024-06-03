@@ -22,5 +22,6 @@ tags
 vim/autoload/**
 vim/plugged/**
 vim/undodir/**
+vim/pack/**
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Vim
