@@ -31,6 +31,10 @@ set nocompatible
 let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go', 'coc-vimlsp']
 let g:vista#renderer#enable_icon = 0
 
+
+set list
+set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+
 " vim-gitgutter used to do this by default:
 highlight! link SignColumn LineNr
 let g:gitgutter_override_sign_column_highlight = 1
