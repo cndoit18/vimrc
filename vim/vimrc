@@ -20,6 +20,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'sainnhe/gruvbox-material'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'yianwillis/vimcdoc'
 call plug#end()
 
 syntax enable
