@@ -16,6 +16,9 @@ Plug 'liuchengxu/vista.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'airblade/vim-gitgutter'
+Plug 'vim-airline/vim-airline'
+Plug 'sainnhe/gruvbox-material'
+Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
 syntax enable
@@ -30,6 +33,8 @@ let g:vista#renderer#enable_icon = 0
 highlight! link SignColumn LineNr
 let g:gitgutter_override_sign_column_highlight = 1
 set updatetime=250
+colorscheme gruvbox-material
+let g:airline_theme = 'gruvbox_material'
 
 if has('termguicolors') && ($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
   " enable true color
