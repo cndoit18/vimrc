@@ -23,6 +23,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'yianwillis/vimcdoc'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'mbbill/undotree'
 call plug#end()
 
 syntax enable
@@ -70,6 +71,7 @@ nmap <leader>ac <Plug>(coc-codeaction)
 
 nnoremap <leader>nf :NERDTreeFocus<CR>
 nnoremap <leader>nt :NERDTreeToggle<CR>
+nnoremap <F5> :UndotreeToggle<CR>
 
 if has('persistent_undo')
   set undofile
