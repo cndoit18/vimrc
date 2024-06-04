@@ -29,12 +29,13 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 call plug#end()
 
+filetype on
 syntax enable
 set encoding=utf-8
 set number
 set nobackup
 set nocompatible
-let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go', 'coc-vimlsp']
+let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go', 'coc-vimlsp', 'coc-json', 'coc-yaml']
 let g:vista#renderer#enable_icon = 0
 let g:NERDTreeShowLineNumbers = 1
 
@@ -48,6 +49,12 @@ let g:gitgutter_override_sign_column_highlight = 1
 set updatetime=250
 colorscheme gruvbox-material
 let g:airline_theme = 'gruvbox_material'
+
+let g:go_gopls_enabled = 1
+let g:go_gopls_options = ['-remote=auto']
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+let g:go_referrers_mode = 'gopls'
 
 if has('termguicolors') && ($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
   " enable true color

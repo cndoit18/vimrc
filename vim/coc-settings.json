@@ -1,7 +1,23 @@
 {
-	"languageserver": {
-		"go.goplsOptions": {
-				"gofumpt": true
+	"go": {
+		"goplsPath": "${env:GOPATH}/bin/gopls",
+		"rootPatterns": [
+			"go.mod"
+		],
+		"trace.server": "verbose",
+		"filetypes": [
+			"go"
+		],
+		"goplsOptions": {
+			"gofumpt": true
+		},
+		"goplsArgs": [
+			"-remote=auto"
+		]
+	},
+	"yaml": {
+		"format": {
+			"enable": true
 		}
 	}
 }
