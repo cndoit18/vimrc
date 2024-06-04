@@ -44,6 +44,7 @@ let g:gitgutter_override_sign_column_highlight = 1
 set updatetime=250
 colorscheme gruvbox-material
 let g:airline_theme = 'gruvbox_material'
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 if has('termguicolors') && ($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
   " enable true color
