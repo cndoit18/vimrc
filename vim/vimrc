@@ -36,6 +36,7 @@ set nobackup
 set nocompatible
 let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go', 'coc-vimlsp']
 let g:vista#renderer#enable_icon = 0
+let g:NERDTreeShowLineNumbers = 1
 
 
 set list
