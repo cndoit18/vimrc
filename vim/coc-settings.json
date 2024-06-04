@@ -1,0 +1,7 @@
+{
+	"languageserver": {
+		"go.goplsOptions": {
+				"gofumpt": true
+		}
+	}
+}
