@@ -27,6 +27,8 @@ Plug 'mbbill/undotree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'mg979/vim-visual-multi'
+Plug 'easymotion/vim-easymotion'
 call plug#end()
 
 filetype on
