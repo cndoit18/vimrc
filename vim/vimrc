@@ -29,6 +29,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'mg979/vim-visual-multi'
 Plug 'easymotion/vim-easymotion'
+if has('mac')
+  Plug 'ybian/smartim'
+endif
 call plug#end()
 
 filetype on
@@ -91,6 +94,7 @@ command! -nargs=? Format :call CocAction('format', <f-args>)
 autocmd BufEnter *.png,*.jpg,*gif,*pdf exec "! imgcat ".expand("%") | :bw
 
 let g:mkdp_auto_start = 1
+let g:smartim_default = 'com.apple.keylayout.ABC'
 
 if has('persistent_undo')
   set undofile
