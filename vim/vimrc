@@ -48,6 +48,14 @@ let g:NERDSpaceDelims = 1
 let g:NERDDefaultAlign = 'left'
 let g:NERDToggleCheckAllLines = 1
 
+function! VM_Start()
+  let g:smartim_disable = 1
+endfunction
+
+function! VM_Exit()
+  unlet g:smartim_disable
+endfunction
+
 set list
 set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
 
@@ -91,6 +99,10 @@ nmap <leader>ac <Plug>(coc-codeaction)
 nnoremap <leader>nf :NERDTreeFocus<CR>
 nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <F5> :UndotreeToggle<CR>
+
+let g:VM_maps = {}
+let g:VM_maps["Add Cursor Down"]      = '<C-j>'
+let g:VM_maps["Add Cursor Up"]        = '<C-k>'
 
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 command! -nargs=? Format :call CocAction('format', <f-args>)
