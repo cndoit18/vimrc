@@ -48,14 +48,6 @@ let g:NERDSpaceDelims = 1
 let g:NERDDefaultAlign = 'left'
 let g:NERDToggleCheckAllLines = 1
 
-function! VM_Start()
-  let g:smartim_disable = 1
-endfunction
-
-function! VM_Exit()
-  unlet g:smartim_disable
-endfunction
-
 set list
 set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
 
