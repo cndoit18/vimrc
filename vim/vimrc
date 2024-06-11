@@ -100,7 +100,6 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 command! -nargs=? Format :call CocAction('format', <f-args>)
 autocmd BufEnter *.png,*.jpg,*gif,*pdf exec "! imgcat ".expand("%") | :bw
 
-let g:mkdp_auto_start = 1
 let g:smartim_default = 'com.apple.keylayout.ABC'
 
 if has('persistent_undo')
