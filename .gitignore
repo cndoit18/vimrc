@@ -25,4 +25,6 @@ vim/plugged/**
 vim/undodir/**
 vim/pack/**
 
+.DS_Store
+
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Vim
