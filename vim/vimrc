@@ -43,7 +43,7 @@ set nobackup
 set nocompatible
 set foldmethod=syntax
 set foldlevel=99
-let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go', 'coc-vimlsp', 'coc-json', 'coc-yaml']
+let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go', 'coc-vimlsp', 'coc-json', 'coc-yaml', 'coc-spell-checker']
 let g:vista_default_executive = 'coc'
 let g:vista#renderer#enable_icon = 0
 let g:NERDTreeShowLineNumbers = 1
@@ -89,7 +89,8 @@ nmap <silent>gi <Plug>(coc-implementation)
 nmap <silent>gr <Plug>(coc-references)
 nmap <silent>[g <Plug>(coc-diagnostic-prev)
 nmap <silent>]g <Plug>(coc-diagnostic-next)
-nmap <leader>ac <Plug>(coc-codeaction)
+nmap <leader>a <Plug>(coc-codeaction-selected)
+vmap <leader>a <Plug>(coc-codeaction-selected)
 
 nnoremap <leader>nf :NERDTreeFocus<CR>
 nnoremap <leader>nt :NERDTreeToggle<CR>
