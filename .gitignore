@@ -19,11 +19,11 @@ tags
 [._]*.un~
 
 
-vim/view/**
-vim/autoload/**
-vim/plugged/**
-vim/undodir/**
-vim/pack/**
+*vim/view/**
+*vim/autoload/**
+*vim/plugged/**
+*vim/undodir/**
+*vim/pack/**
 
 .DS_Store
 
