@@ -1,11 +1,12 @@
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+	silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin()
 " nvim
+Plug 'nvim-tree/nvim-web-devicons'
 Plug 'rcarriga/nvim-notify'
 Plug 'sainnhe/gruvbox-material'
 Plug 'nvim-lualine/lualine.nvim'
@@ -15,19 +16,18 @@ Plug 'nvim-neo-tree/neo-tree.nvim', {'branch': 'v3.x'}
 Plug 'nvim-lua/plenary.nvim'
 Plug 'MunifTanjim/nui.nvim'
 Plug 'lewis6991/gitsigns.nvim'
-
-" If you want to have icons in your statusline choose one of these
-Plug 'nvim-tree/nvim-web-devicons'
+Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/nvim-cmp'
 
 " vim
 Plug 'tpope/vim-eunuch'
 Plug 'yegappan/mru'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'liuchengxu/vista.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'yianwillis/vimcdoc'
-Plug 'ryanoasis/vim-devicons'
 Plug 'mbbill/undotree'
 Plug 'tpope/vim-fugitive'
 Plug 'mg979/vim-visual-multi'
@@ -38,9 +38,38 @@ endif
 Plug 'preservim/nerdcommenter'
 call plug#end()
 
-lua require('lualine').setup({options = { theme  = 'gruvbox-material' }})
-lua require("neo-tree").setup()
-lua require('gitsigns').setup()
+lua <<EOF
+require('lualine').setup({options = { theme  = 'gruvbox-material' }})
+require('neo-tree').setup()
+require('gitsigns').setup()
+require('toggleterm').setup()
+require('mason').setup()
+require('mason-lspconfig').setup()
+local cmp = require 'cmp'
+cmp.setup {
+  sources = {
+    { name = 'nvim_lsp' },
+  },
+  mapping = {
+['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item()),
+['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item()),
+  },
+}
+local lspconfig = require('lspconfig')
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local servers = { 'lua_ls', 'gopls' }
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup {
+    capabilities = capabilities,
+  }
+end
+EOF
+
+
+" set
+autocmd TermEnter term://*toggleterm#*
+      \ tnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+nnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 filetype on
 syntax enable
@@ -52,7 +81,7 @@ set nobackup
 set nocompatible
 set foldmethod=syntax
 set foldlevel=99
-let g:coc_global_extensions = ['coc-rust-analyzer', 'coc-go', 'coc-vimlsp', 'coc-json', 'coc-yaml']
+
 let g:vista_default_executive = 'coc'
 let g:vista#renderer#enable_icon = 0
 
@@ -68,35 +97,21 @@ augroup END
 
 colorscheme gruvbox-material
 
-let g:go_gopls_enabled = 1
-let g:go_gopls_options = ['-remote=auto']
-let g:go_def_mode='gopls'
-let g:go_info_mode='gopls'
-let g:go_referrers_mode = 'gopls'
-
 if has('termguicolors') && ($COLORTERM == 'truecolor' || $COLORTERM == '24bit')
   " enable true color
   set termguicolors
 endif
 
 
-function! ShowDocumentation()
-  if CocAction('hasProvider', 'hover')
-    call CocActionAsync('doHover')
-  else
-    call feedkeys('K', 'in')
-  endif
-endfunction
-
 " GoTo code navigation
-nmap <silent>K :call ShowDocumentation()<CR>
-nmap <silent>gd <Plug>(coc-definition)
-nmap <silent>gy <Plug>(coc-type-definition)
-nmap <silent>gi <Plug>(coc-implementation)
-nmap <silent>gr <Plug>(coc-references)
-nmap <silent>[g <Plug>(coc-diagnostic-prev)
-nmap <silent>]g <Plug>(coc-diagnostic-next)
-nmap <leader>ac <Plug>(coc-codeaction)
+nmap <silent>K :lua vim.lsp.buf.hover()<CR>
+nmap <silent>gd :lua vim.lsp.buf.definition()<CR>
+nmap <silent>gy :lua vim.lsp.buf.type_definition()<CR>
+nmap <silent>gi :lua vim.lsp.buf.implementation()<CR>
+nmap <silent>gr :lua vim.lsp.buf.references()<CR>
+nmap <silent>[g :lua vim.diagnostic.goto_prev()<CR>
+nmap <silent>]g :lua vim.diagnostic.goto_next()<CR>
+nmap <leader>ac :lua vim.lsp.buf.code_action()<CR>
 
 nnoremap <leader>nt :Neotree toggle<CR>
 nnoremap <leader>nf :Neotree focus<CR>
@@ -107,8 +122,8 @@ let g:VM_maps = {}
 let g:VM_maps["Add Cursor Down"]      = '<C-j>'
 let g:VM_maps["Add Cursor Up"]        = '<C-k>'
 
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
-command! -nargs=? Format :call CocAction('format', <f-args>)
+command! -nargs=? Fold :lua vim.lsp.buf.fold() <f-args>
+command! -nargs=? Format :lua vim.lsp.buf.format() <f-args>
 autocmd BufEnter *.png,*.jpg,*gif,*pdf exec "! imgcat ".expand("%") | :bw
 autocmd BufEnter * if winnr('$') == 1 && bufname() == "__vista__" | execute "normal! :q!\<CR>" | endif
 
