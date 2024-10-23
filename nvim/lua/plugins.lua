@@ -66,6 +66,31 @@ return {
 			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 			"MunifTanjim/nui.nvim",
 			-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+			{
+				"s1n7ax/nvim-window-picker",
+				lazy = true,
+				opts = {
+					filter_rules = {
+						-- filter using buffer options
+						bo = {
+							-- if the file type is one of following, the window will be ignored
+							filetype = {
+								"neo-tree",
+								"neo-tree-popup",
+								"notify",
+								"packer",
+								"qf",
+								"diff",
+								"fugitive",
+								"fugitiveblame",
+							},
+
+							-- if the buffer type is one of following, the window will be ignored
+							buftype = { "nofile", "help", "terminal" },
+						},
+					},
+				},
+			},
 		},
 		opts = {
 			close_if_last_window = true,
