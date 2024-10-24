@@ -1,4 +1,5 @@
 local tools = {
+	-- Formatter
 	"delve",
 	"stylua",
 	"sqlfmt",
@@ -6,9 +7,14 @@ local tools = {
 	"black",
 	"gofumpt",
 	"prettier",
+
+	-- Lint
+	"markdownlint",
+	"golangci-lint",
 }
 
 local lsp_servers = {
+	"rust_analyzer",
 	"bashls",
 	"dockerls",
 	"jsonls",
@@ -391,6 +397,26 @@ return {
 	},
 
 	{
+		"mfussenegger/nvim-lint",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			local lint = require("lint")
+			lint.linters_by_ft = {
+				markdown = { "markdownlint" },
+				go = { "golangcilint" },
+				rust = { "clippy" },
+			}
+			local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+				group = lint_augroup,
+				callback = function()
+					require("lint").try_lint()
+				end,
+			})
+		end,
+	},
+
+	{
 		"mhartington/formatter.nvim",
 		lazy = false,
 		config = function()
@@ -407,6 +433,7 @@ return {
 					sh = { require("formatter.filetypes.sh").shfmt },
 					python = { require("formatter.filetypes.python").black },
 					go = { require("formatter.filetypes.go").gofumpt },
+					rust = { require("formatter.filetypes.rust").rustfmt },
 
 					glsl = { prettier }, -- to work install prettier-plugin-glsl and add it to the prettier config: `plugins: ["prettier-plugin-glsl"]`
 					svelte = { prettier },
