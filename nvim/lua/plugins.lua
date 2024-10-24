@@ -1,5 +1,5 @@
 local tools = {
-
+	"delve",
 }
 
 local lsp_servers = {
@@ -28,6 +28,175 @@ return {
 
 	{
 		"rcarriga/nvim-notify",
+	},
+
+	{
+		"mfussenegger/nvim-dap",
+		lazy = true,
+		keys = {
+			{ "<leader>d",  "",                                                            desc = "+Debug" },
+			{ "<leader>db", function() require("dap").toggle_breakpoint() end,             desc = "Toggle Breakpoint" },
+			{ "<leader>dc", function() require("dap").run_to_cursor() end,                 desc = "Continue" },
+			{ "<leader>di", function() require("dap").step_into() end,                     desc = "Step Into" },
+			{ "<leader>dn", function() require("dap").step_over() end,                     desc = "Step Over" },
+			{ "<leader>do", function() require("dap").step_out() end,                      desc = "Step Out" },
+			{ "<leader>du", function() require("dap").up() end,                            desc = "Up" },
+			{ "<leader>dr", function() require("dap").repl.toggle() end,                   desc = "Toggle REPL" },
+			{ "<leader>ds", function() require("dap").continue() end,                      desc = "Run" },
+			{ "<leader>dC", function() require("dap").run_to_cursor() end,                 desc = "Run to Cursor", },
+			{ "<leader>dl", function() require("dap").run_last() end,                      desc = "Run Last" },
+			{ "<leader>dt", function() require("dap").terminate() end,                     desc = "Terminate" },
+			{ "<leader>dK", function() require("dap.ui.widgets").hover() end,              desc = "Widgets" },
+		},
+		config = function()
+			local dap = require("dap")
+			-- Go
+			-- Requires:
+			-- * You have initialized your module with 'go mod init module_name'.
+			-- * You :cd your project before running DAP.
+			dap.adapters.delve = {
+				type = 'server',
+				port = '${port}',
+				executable = {
+					command = vim.fn.stdpath('data') .. '/mason/packages/delve/dlv',
+					args = { 'dap', '-l', '127.0.0.1:${port}' },
+				}
+			}
+			dap.configurations.go = {
+				{
+					type = "delve",
+					name = "Compile module and debug this file",
+					request = "launch",
+					program = "./${relativeFileDirname}",
+				},
+				{
+					type = "delve",
+					name = "Compile module and debug this file (test)",
+					request = "launch",
+					mode = "test",
+					program = "./${relativeFileDirname}"
+				},
+			}
+		end,
+		dependencies = {
+			{
+				"rcarriga/nvim-dap-ui",
+				dependencies = "nvim-neotest/nvim-nio",
+				keys = {
+					{ "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI" },
+					{ "<leader>dE", function() require("dapui").eval() end,     desc = "Eval",  mode = { "n", "v" } }, },
+				config = function(_, opts)
+					local dap, dapui = require("dap"), require("dapui")
+					dapui.setup(opts)
+					dap.listeners.after.event_initialized["dapui_config"] = function()
+						dapui.open({})
+					end
+					dap.listeners.before.event_terminated["dapui_config"] = function()
+						dapui.close({})
+					end
+					dap.listeners.before.event_exited["dapui_config"] = function()
+						dapui.close({})
+					end
+
+					local dap_breakpoint = {
+						error = {
+							text = "🟥",
+							texthl = "LspDiagnosticsSignError",
+							linehl = "",
+							numhl = "",
+						},
+						rejected = {
+							text = "",
+							texthl = "LspDiagnosticsSignHint",
+							linehl = "",
+							numhl = "",
+						},
+						stopped = {
+							text = "⭐️",
+							texthl = "LspDiagnosticsSignInformation",
+							linehl = "DiagnosticUnderlineInfo",
+							numhl = "LspDiagnosticsSignInformation",
+						},
+					}
+
+					vim.fn.sign_define("DapBreakpoint", dap_breakpoint.error)
+					vim.fn.sign_define("DapStopped", dap_breakpoint.stopped)
+					vim.fn.sign_define("DapBreakpointRejected", dap_breakpoint.rejected)
+				end,
+			},
+		},
+	},
+
+	{
+		"folke/trouble.nvim",
+		cmd = { "Trouble" },
+		opts = {
+			modes = {
+				lsp = {
+					win = { position = "right" },
+				},
+			},
+		},
+		keys = {
+			{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics (Trouble)" },
+			{ "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
+			{ "<leader>cs", "<cmd>Trouble symbols toggle<cr>",                  desc = "Symbols (Trouble)" },
+			{ "<leader>cS", "<cmd>Trouble lsp toggle<cr>",                      desc = "LSP references/definitions/... (Trouble)" },
+			{ "<leader>xL", "<cmd>Trouble loclist toggle<cr>",                  desc = "Location List (Trouble)" },
+			{ "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",                   desc = "Quickfix List (Trouble)" },
+			{
+				"[q",
+				function()
+					if require("trouble").is_open() then
+						require("trouble").prev({ skip_groups = true, jump = true })
+					else
+						local ok, err = pcall(vim.cmd.cprev)
+						if not ok then
+							vim.notify(err, vim.log.levels.ERROR)
+						end
+					end
+				end,
+				desc = "Previous Trouble/Quickfix Item",
+			},
+			{
+				"]q",
+				function()
+					if require("trouble").is_open() then
+						require("trouble").next({ skip_groups = true, jump = true })
+					else
+						local ok, err = pcall(vim.cmd.cnext)
+						if not ok then
+							vim.notify(err, vim.log.levels.ERROR)
+						end
+					end
+				end,
+				desc = "Next Trouble/Quickfix Item",
+			},
+		},
+	},
+
+	{
+		"folke/flash.nvim",
+		event = "VeryLazy",
+		---@type Flash.Config
+		opts = {
+			modes = {
+				search = {
+					enabled = true,
+				},
+				char = {
+					jump_labels = true,
+				},
+			},
+		},
+		-- stylua: ignore
+		keys = {
+			{ "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+			{ "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+			{ "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+			{ "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+			{ "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+		},
 	},
 
 	{
@@ -93,6 +262,14 @@ return {
 			},
 		},
 		opts = {
+			event_handlers = {
+				{
+					event = "neo_tree_buffer_enter",
+					handler = function()
+						vim.cmd([[setlocal relativenumber]])
+					end,
+				},
+			},
 			close_if_last_window = true,
 			filesystem = {
 				commands = {
@@ -124,6 +301,12 @@ return {
 		opts = {
 			theme = "gruvbox-material",
 		},
+		config = function(_, opts)
+			require("lualine").setup({
+				options = opts,
+				extensions = { "neo-tree", "lazy" },
+			})
+		end
 	},
 
 	{
@@ -195,7 +378,8 @@ return {
 		version = "*",
 		config = function()
 			require("toggleterm").setup()
-			vim.cmd([[autocmd TermEnter term://*toggleterm#* tnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>]])
+			vim.cmd(
+				[[autocmd TermEnter term://*toggleterm#* tnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>]])
 		end,
 	},
 
