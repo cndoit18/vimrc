@@ -1,5 +1,11 @@
 local tools = {
 	"delve",
+	"stylua",
+	"sqlfmt",
+	"shfmt",
+	"black",
+	"gofumpt",
+	"prettier",
 }
 
 local lsp_servers = {
@@ -23,7 +29,7 @@ return {
 			-- directly inside the plugin declaration.
 			vim.g.gruvbox_material_enable_italic = true
 			vim.cmd.colorscheme("gruvbox-material")
-		end
+		end,
 	},
 
 	{
@@ -34,19 +40,91 @@ return {
 		"mfussenegger/nvim-dap",
 		lazy = true,
 		keys = {
-			{ "<leader>d",  "",                                                            desc = "+Debug" },
-			{ "<leader>db", function() require("dap").toggle_breakpoint() end,             desc = "Toggle Breakpoint" },
-			{ "<leader>dc", function() require("dap").run_to_cursor() end,                 desc = "Continue" },
-			{ "<leader>di", function() require("dap").step_into() end,                     desc = "Step Into" },
-			{ "<leader>dn", function() require("dap").step_over() end,                     desc = "Step Over" },
-			{ "<leader>do", function() require("dap").step_out() end,                      desc = "Step Out" },
-			{ "<leader>du", function() require("dap").up() end,                            desc = "Up" },
-			{ "<leader>dr", function() require("dap").repl.toggle() end,                   desc = "Toggle REPL" },
-			{ "<leader>ds", function() require("dap").continue() end,                      desc = "Run" },
-			{ "<leader>dC", function() require("dap").run_to_cursor() end,                 desc = "Run to Cursor", },
-			{ "<leader>dl", function() require("dap").run_last() end,                      desc = "Run Last" },
-			{ "<leader>dt", function() require("dap").terminate() end,                     desc = "Terminate" },
-			{ "<leader>dK", function() require("dap.ui.widgets").hover() end,              desc = "Widgets" },
+			{ "<leader>d", "", desc = "+Debug" },
+			{
+				"<leader>db",
+				function()
+					require("dap").toggle_breakpoint()
+				end,
+				desc = "Toggle Breakpoint",
+			},
+			{
+				"<leader>dc",
+				function()
+					require("dap").run_to_cursor()
+				end,
+				desc = "Continue",
+			},
+			{
+				"<leader>di",
+				function()
+					require("dap").step_into()
+				end,
+				desc = "Step Into",
+			},
+			{
+				"<leader>dn",
+				function()
+					require("dap").step_over()
+				end,
+				desc = "Step Over",
+			},
+			{
+				"<leader>do",
+				function()
+					require("dap").step_out()
+				end,
+				desc = "Step Out",
+			},
+			{
+				"<leader>du",
+				function()
+					require("dap").up()
+				end,
+				desc = "Up",
+			},
+			{
+				"<leader>dr",
+				function()
+					require("dap").repl.toggle()
+				end,
+				desc = "Toggle REPL",
+			},
+			{
+				"<leader>ds",
+				function()
+					require("dap").continue()
+				end,
+				desc = "Run",
+			},
+			{
+				"<leader>dC",
+				function()
+					require("dap").run_to_cursor()
+				end,
+				desc = "Run to Cursor",
+			},
+			{
+				"<leader>dl",
+				function()
+					require("dap").run_last()
+				end,
+				desc = "Run Last",
+			},
+			{
+				"<leader>dt",
+				function()
+					require("dap").terminate()
+				end,
+				desc = "Terminate",
+			},
+			{
+				"<leader>dK",
+				function()
+					require("dap.ui.widgets").hover()
+				end,
+				desc = "Widgets",
+			},
 		},
 		config = function()
 			local dap = require("dap")
@@ -55,12 +133,12 @@ return {
 			-- * You have initialized your module with 'go mod init module_name'.
 			-- * You :cd your project before running DAP.
 			dap.adapters.delve = {
-				type = 'server',
-				port = '${port}',
+				type = "server",
+				port = "${port}",
 				executable = {
-					command = vim.fn.stdpath('data') .. '/mason/packages/delve/dlv',
-					args = { 'dap', '-l', '127.0.0.1:${port}' },
-				}
+					command = vim.fn.stdpath("data") .. "/mason/packages/delve/dlv",
+					args = { "dap", "-l", "127.0.0.1:${port}" },
+				},
 			}
 			dap.configurations.go = {
 				{
@@ -74,7 +152,7 @@ return {
 					name = "Compile module and debug this file (test)",
 					request = "launch",
 					mode = "test",
-					program = "./${relativeFileDirname}"
+					program = "./${relativeFileDirname}",
 				},
 			}
 		end,
@@ -83,8 +161,22 @@ return {
 				"rcarriga/nvim-dap-ui",
 				dependencies = "nvim-neotest/nvim-nio",
 				keys = {
-					{ "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI" },
-					{ "<leader>dE", function() require("dapui").eval() end,     desc = "Eval",  mode = { "n", "v" } }, },
+					{
+						"<leader>du",
+						function()
+							require("dapui").toggle({})
+						end,
+						desc = "Dap UI",
+					},
+					{
+						"<leader>dE",
+						function()
+							require("dapui").eval()
+						end,
+						desc = "Eval",
+						mode = { "n", "v" },
+					},
+				},
 				config = function(_, opts)
 					local dap, dapui = require("dap"), require("dapui")
 					dapui.setup(opts)
@@ -138,12 +230,16 @@ return {
 			},
 		},
 		keys = {
-			{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics (Trouble)" },
+			{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
 			{ "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-			{ "<leader>cs", "<cmd>Trouble symbols toggle<cr>",                  desc = "Symbols (Trouble)" },
-			{ "<leader>cS", "<cmd>Trouble lsp toggle<cr>",                      desc = "LSP references/definitions/... (Trouble)" },
-			{ "<leader>xL", "<cmd>Trouble loclist toggle<cr>",                  desc = "Location List (Trouble)" },
-			{ "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",                   desc = "Quickfix List (Trouble)" },
+			{ "<leader>cs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols (Trouble)" },
+			{
+				"<leader>cS",
+				"<cmd>Trouble lsp toggle<cr>",
+				desc = "LSP references/definitions/... (Trouble)",
+			},
+			{ "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
+			{ "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
 			{
 				"[q",
 				function()
@@ -203,7 +299,8 @@ return {
 		"williamboman/mason.nvim",
 		lazy = false,
 		dependencies = {
-			"williamboman/mason-lspconfig.nvim", module = "mason",
+			"williamboman/mason-lspconfig.nvim",
+			module = "mason",
 		},
 		config = function()
 			require("mason").setup()
@@ -294,6 +391,52 @@ return {
 	},
 
 	{
+		"mhartington/formatter.nvim",
+		lazy = false,
+		config = function()
+			local prettier = require("formatter.defaults").prettier
+			require("formatter").setup({
+				-- Enable or disable logging
+				logging = true,
+				-- Set the log level
+				log_level = vim.log.levels.WARN,
+				-- All formatter configurations are opt-in
+				filetype = {
+					lua = { require("formatter.filetypes.lua").stylua },
+					sql = { require("formatter.filetypes.sql").sqlfmt },
+					sh = { require("formatter.filetypes.sh").shfmt },
+					python = { require("formatter.filetypes.python").black },
+					go = { require("formatter.filetypes.go").gofumpt },
+
+					glsl = { prettier }, -- to work install prettier-plugin-glsl and add it to the prettier config: `plugins: ["prettier-plugin-glsl"]`
+					svelte = { prettier },
+					javascript = { prettier },
+					javascriptreact = { prettier },
+					typescript = { prettier },
+					typescriptreact = { prettier },
+					astro = { prettier }, -- prettier-plugin-astro
+					vue = { prettier },
+					css = { prettier },
+					scss = { prettier },
+					less = { prettier },
+					html = { prettier },
+					json = { prettier },
+					jsonc = { prettier },
+					yaml = { prettier },
+					markdown = { prettier },
+					graphql = { prettier },
+					handlebars = { prettier },
+					svg = { prettier },
+
+					["*"] = {
+						require("formatter.filetypes.any").remove_trailing_whitespace,
+					},
+				},
+			})
+		end,
+	},
+
+	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
@@ -306,7 +449,7 @@ return {
 				options = opts,
 				extensions = { "neo-tree", "lazy" },
 			})
-		end
+		end,
 	},
 
 	{
@@ -331,7 +474,7 @@ return {
 		},
 		opts = {
 			current_line_blame = true,
-		}
+		},
 	},
 
 	{
@@ -339,7 +482,7 @@ return {
 		build = ":TSUpdate",
 		event = { "BufReadPost", "BufNewFile" },
 		config = function()
-			require("nvim-treesitter.configs").setup {
+			require("nvim-treesitter.configs").setup({
 				ensure_installed = {
 					"bash",
 					"cmake",
@@ -369,17 +512,22 @@ return {
 				},
 				indent = { enable = true },
 				autopairs = { enable = true },
-			}
-		end
+			})
+		end,
 	},
 
 	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
-		config = function()
-			require("toggleterm").setup()
-			vim.cmd(
-				[[autocmd TermEnter term://*toggleterm#* tnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>]])
+		opts = {
+			open_mapping = [[<C-t>]],
+			terminal_mappings = true,
+			start_in_insert = true,
+		},
+		config = function(_, opts)
+			require("toggleterm").setup({
+				options = opts,
+			})
 		end,
 	},
 
@@ -396,12 +544,12 @@ return {
 			local lspconfig = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			for _, lsp in ipairs(lsp_servers) do
-				lspconfig[lsp].setup {
+				lspconfig[lsp].setup({
 					capabilities = capabilities,
-				}
+				})
 			end
 			local cmp = require("cmp")
-			cmp.setup {
+			cmp.setup({
 				mapping = {
 					["<C-y>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
@@ -436,28 +584,27 @@ return {
 					{
 						name = "lazydev",
 						group_index = 0, -- set group index to 0 to skip loading LuaLS completions
-					}
+					},
 				},
-			}
+			})
 			-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
 			cmp.setup.cmdline({ "/", "?" }, {
 				mapping = cmp.mapping.preset.cmdline(),
 				sources = {
-					{ name = "buffer" }
-				}
+					{ name = "buffer" },
+				},
 			})
 
 			-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 			cmp.setup.cmdline(":", {
 				mapping = cmp.mapping.preset.cmdline(),
 				sources = cmp.config.sources({
-					{ name = "path" }
+					{ name = "path" },
 				}, {
-					{ name = "cmdline" }
+					{ name = "cmdline" },
 				}),
-				matching = { disallow_symbol_nonprefix_matching = false }
+				matching = { disallow_symbol_nonprefix_matching = false },
 			})
 		end,
 	},
-
 }

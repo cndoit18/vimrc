@@ -13,10 +13,6 @@ vim.keymap.set("n", "<leader>ac", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<leader>nt", ":Neotree toggle<CR>")
 vim.keymap.set("n", "<leader>nf", ":Neotree focus<CR>")
 
-vim.keymap.set("n", "<c-t>", [[<Cmd>exe v:count1 . "ToggleTerm"<CR>]], { noremap = true })
-vim.cmd([[command! -nargs=? Fold :lua vim.lsp.buf.fold() <f-args>]])
-vim.cmd([[command! -nargs=? Format :lua vim.lsp.buf.format() <f-args>]])
-
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.cursorline = true
