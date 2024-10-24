@@ -27,4 +27,8 @@ tags
 
 .DS_Store
 
+# Nvim
+.luarc.json
+lazy-lock.json
+
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Vim
