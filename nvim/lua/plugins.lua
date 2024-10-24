@@ -64,7 +64,7 @@ return {
 					.. "hi CodewindowBorder                   guifg=#ea6962 |"
 					.. "hi TabLine                            guibg=#282828 |"
 					.. "hi LineNrAbove                        guifg=#765c3d |"
-					.. "hi LineNrBelow                        guifg=#88481e |"
+					.. "hi LineNrBelow                        guifg=#88481e |",
 			})
 			vim.cmd("colorscheme gruvbox-material")
 			-- Optionally configure and load the colorscheme
@@ -595,13 +595,17 @@ return {
 	},
 
 	{
+		"hrsh7th/nvim-cmp",
+		"hrsh7th/cmp-nvim-lsp",
+		"hrsh7th/cmp-buffer",
+		"hrsh7th/cmp-path",
+		"hrsh7th/cmp-cmdline",
+	},
+
+	{
 		"neovim/nvim-lspconfig",
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
-			"hrsh7th/nvim-cmp",
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-buffer",
-			"hrsh7th/cmp-path",
-			"hrsh7th/cmp-cmdline",
 			{ "j-hui/fidget.nvim", opts = {} },
 		},
 		config = function()
