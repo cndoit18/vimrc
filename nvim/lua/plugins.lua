@@ -566,6 +566,7 @@ return {
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-cmdline",
+			{ "j-hui/fidget.nvim", opts = {} },
 		},
 		config = function()
 			local lspconfig = require("lspconfig")
@@ -632,6 +633,16 @@ return {
 				}),
 				matching = { disallow_symbol_nonprefix_matching = false },
 			})
+		end,
+	},
+
+	{
+		"ibhagwan/fzf-lua",
+		-- optional for icon support
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			-- calling `setup` is optional for customization
+			require("fzf-lua").setup({})
 		end,
 	},
 }
