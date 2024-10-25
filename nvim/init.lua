@@ -23,6 +23,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 vim.keymap.set("n", "[g", vim.diagnostic.goto_prev)
 vim.keymap.set("n", "]g", vim.diagnostic.goto_next)
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { noremap = true })
 
 -- put quickfix window always to the bottom
 local qfgroup = vim.api.nvim_create_augroup("changeQuickfix", { clear = true })
