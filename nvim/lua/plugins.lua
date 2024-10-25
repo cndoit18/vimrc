@@ -36,7 +36,7 @@ return {
 			vim.g.gruvbox_material_enable_italic = 1
 			vim.g.gruvbox_material_sign_column_background = "none"
 
-			grpid = vim.api.nvim_create_augroup("custom_highlights_gruvboxmaterial", {})
+			local grpid = vim.api.nvim_create_augroup("custom_highlights_gruvboxmaterial", {})
 			vim.api.nvim_create_autocmd("ColorScheme", {
 				group = grpid,
 				pattern = "gruvbox-material",
@@ -671,7 +671,6 @@ return {
 		},
 		config = function()
 			local lspconfig = require("lspconfig")
-			local configs = require("lspconfig/configs")
 			local util = require("lspconfig/util")
 
 			local path = util.path
@@ -737,7 +736,7 @@ return {
 			"kevinhwang91/promise-async",
 		},
 		opts = {
-			provider_selector = function(bufnr, filetype, buftype)
+			provider_selector = function(_, _, _)
 				return { "treesitter", "indent" }
 			end,
 		},
