@@ -695,17 +695,12 @@ return {
 	},
 
 	{
-		"MeanderingProgrammer/render-markdown.nvim",
-		event = { "BufReadPre", "BufNewFile" },
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"echasnovski/mini.nvim",
-			"echasnovski/mini.icons",
-			"nvim-tree/nvim-web-devicons",
-		}, -- if you use the mini.nvim suite
-		---@module 'render-markdown'
-		---@type render.md.UserConfig
-		opts = {},
+		"iamcco/markdown-preview.nvim",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+		ft = { "markdown" },
+		build = function()
+			vim.fn["mkdp#util#install"]()
+		end,
 	},
 
 	{
@@ -727,8 +722,21 @@ return {
 			vim.keymap.set("n", "zR", require("ufo").openAllFolds)
 			vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
 
-
 			require("ufo").setup(opts)
 		end,
+	},
+
+	{
+		"NeogitOrg/neogit",
+		dependencies = {
+			"nvim-lua/plenary.nvim", -- required
+			"sindrets/diffview.nvim", -- optional - Diff integration
+
+			-- Only one of these is needed.
+			"nvim-telescope/telescope.nvim", -- optional
+			"ibhagwan/fzf-lua", -- optional
+			"echasnovski/mini.pick", -- optional
+		},
+		config = true,
 	},
 }
