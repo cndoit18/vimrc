@@ -543,7 +543,7 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
-		event = { "BufReadPost", "BufNewFile" },
+		event = { "BufReadPre", "BufNewFile" },
 		config = function()
 			require("nvim-treesitter.configs").setup({
 				ensure_installed = {
@@ -596,26 +596,13 @@ return {
 
 	{
 		"hrsh7th/nvim-cmp",
-		"hrsh7th/cmp-nvim-lsp",
-		"hrsh7th/cmp-buffer",
-		"hrsh7th/cmp-path",
-		"hrsh7th/cmp-cmdline",
-	},
-
-	{
-		"neovim/nvim-lspconfig",
-		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
-			{ "j-hui/fidget.nvim", opts = {} },
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-cmdline",
 		},
 		config = function()
-			local lspconfig = require("lspconfig")
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			for _, lsp in ipairs(lsp_servers) do
-				lspconfig[lsp].setup({
-					capabilities = capabilities,
-				})
-			end
 			local cmp = require("cmp")
 			cmp.setup({
 				mapping = {
@@ -677,6 +664,27 @@ return {
 	},
 
 	{
+		"neovim/nvim-lspconfig",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			{ "j-hui/fidget.nvim", opts = {} },
+		},
+		config = function()
+			local lspconfig = require("lspconfig")
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			capabilities.textDocument.foldingRange = {
+				dynamicRegistration = false,
+				lineFoldingOnly = true,
+			}
+			for _, lsp in ipairs(lsp_servers) do
+				lspconfig[lsp].setup({
+					capabilities = capabilities,
+				})
+			end
+		end,
+	},
+
+	{
 		"ibhagwan/fzf-lua",
 		-- optional for icon support
 		dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -698,5 +706,29 @@ return {
 		---@module 'render-markdown'
 		---@type render.md.UserConfig
 		opts = {},
+	},
+
+	{
+		"kevinhwang91/nvim-ufo",
+		dependencies = {
+			"kevinhwang91/promise-async",
+		},
+		opts = {
+			provider_selector = function(bufnr, filetype, buftype)
+				return { "treesitter", "indent" }
+			end,
+		},
+		config = function(_, opts)
+			vim.o.foldcolumn = "1" -- '0' is not bad
+			vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+			vim.o.foldlevelstart = 99
+			vim.o.foldenable = true
+
+			vim.keymap.set("n", "zR", require("ufo").openAllFolds)
+			vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
+
+
+			require("ufo").setup(opts)
+		end,
 	},
 }
