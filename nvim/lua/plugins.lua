@@ -265,9 +265,16 @@ return {
 		"folke/trouble.nvim",
 		cmd = { "Trouble" },
 		opts = {
+			auto_preview = false,
 			modes = {
-				lsp = {
-					win = { position = "right" },
+				preview_diagnostics = {
+					mode = "diagnostics",
+					preview = {
+						type = "split",
+						relative = "win",
+						position = "right",
+						size = 0.3,
+					},
 				},
 			},
 		},
@@ -286,6 +293,7 @@ return {
 				"[q",
 				function()
 					if require("trouble").is_open() then
+						---@diagnostic disable-next-line: missing-parameter,missing-fields
 						require("trouble").prev({ skip_groups = true, jump = true })
 					else
 						local ok, err = pcall(vim.cmd.cprev)
@@ -300,6 +308,7 @@ return {
 				"]q",
 				function()
 					if require("trouble").is_open() then
+						---@diagnostic disable-next-line: missing-parameter,missing-fields
 						require("trouble").next({ skip_groups = true, jump = true })
 					else
 						local ok, err = pcall(vim.cmd.cnext)
@@ -327,14 +336,6 @@ return {
 				},
 			},
 		},
-		-- stylua: ignore
-		keys = {
-			{ "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
-			{ "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
-			{ "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
-			{ "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-			{ "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
-		},
 	},
 
 	{
@@ -358,7 +359,7 @@ return {
 			if registry.refresh then
 				registry.refresh(install_ensured)
 			else
-				install_ensured()
+			install_ensured()
 			end
 			require("mason-lspconfig").setup({ ensure_installed = lsp_servers })
 		end,
@@ -545,6 +546,7 @@ return {
 		build = ":TSUpdate",
 		event = { "BufReadPre", "BufNewFile" },
 		config = function()
+			---@diagnostic disable-next-line: missing-fields
 			require("nvim-treesitter.configs").setup({
 				ensure_installed = {
 					"bash",
@@ -658,6 +660,7 @@ return {
 				}, {
 					{ name = "cmdline" },
 				}),
+				---@diagnostic disable-next-line: missing-fields
 				matching = { disallow_symbol_nonprefix_matching = false },
 			})
 		end,
@@ -708,6 +711,7 @@ return {
 					capabilities = capabilities,
 				})
 			end
+			vim.diagnostic.config({ virtual_text = false })
 		end,
 	},
 
