@@ -359,7 +359,7 @@ return {
 			if registry.refresh then
 				registry.refresh(install_ensured)
 			else
-			install_ensured()
+				install_ensured()
 			end
 			require("mason-lspconfig").setup({ ensure_installed = lsp_servers })
 		end,
@@ -758,17 +758,27 @@ return {
 	},
 
 	{
-		"NeogitOrg/neogit",
-		dependencies = {
-			"nvim-lua/plenary.nvim", -- required
-			"sindrets/diffview.nvim", -- optional - Diff integration
-
-			-- Only one of these is needed.
-			"nvim-telescope/telescope.nvim", -- optional
-			"ibhagwan/fzf-lua", -- optional
-			"echasnovski/mini.pick", -- optional
+		"kdheepak/lazygit.nvim",
+		lazy = false,
+		cmd = {
+			"LazyGit",
+			"LazyGitConfig",
+			"LazyGitCurrentFile",
+			"LazyGitFilter",
+			"LazyGitFilterCurrentFile",
 		},
-		config = true,
+		-- optional for floating window border decoration
+		dependencies = {
+			"nvim-telescope/telescope.nvim",
+			"nvim-lua/plenary.nvim",
+			-- + brew install jesseduffield/lazygit/lazygit
+		},
+		keys = {
+			{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+		},
+		config = function()
+			require("telescope").load_extension("lazygit")
+		end,
 	},
 
 	{
