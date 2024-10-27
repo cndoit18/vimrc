@@ -414,6 +414,36 @@ return {
 						vim.fn.system({ "trash", vim.fn.fnameescape(path) })
 						require("neo-tree.sources.manager").refresh(state.name)
 					end,
+					system_open = function(state)
+						local node = state.tree:get_node()
+						local path = node:get_id()
+						local getOS = function()
+							local handle = io.popen("uname -s")
+							if handle == nil then
+								vim.notify("Error while opening handler", vim.log.levels.ERROR)
+								return ""
+							end
+							local uname = handle:read("*a")
+							handle:close()
+							uname = uname:gsub("%s+", "")
+							if uname == "Darwin" then
+								return "Darwin"
+							elseif uname == "NixOS" then
+								return "NixOS"
+							elseif uname == "Linux" then
+								return "Linux"
+							else
+								return ""
+							end
+						end
+						if getOS() == "Darwin" then
+							vim.api.nvim_command("silent !open -g " .. path)
+						elseif getOS() == "Linux" then
+							vim.api.nvim_command(string.format("silent !xdg-open '%s'", path))
+						else
+							vim.notify("Could not determine OS", vim.log.levels.ERROR)
+						end
+					end,
 				},
 				filtered_items = {
 					hide_dotfiles = false,
@@ -421,6 +451,10 @@ return {
 				},
 				follow_current_file = {
 					enabled = true,
+				},
+			},
+			window = { mappings = {
+					["<2-LeftMouse>"] = "system_open",
 				},
 			},
 		},
