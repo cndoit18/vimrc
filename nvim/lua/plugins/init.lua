@@ -330,6 +330,9 @@ return {
 				char = {
 					jump_labels = true,
 				},
+				search = {
+					enabled = false,
+				},
 			},
 		},
 	},
@@ -454,9 +457,8 @@ return {
 				},
 			},
 			window = { mappings = {
-					["<2-LeftMouse>"] = "system_open",
-				},
-			},
+				["<2-LeftMouse>"] = "system_open",
+			} },
 		},
 		config = function(_, opts)
 			require("neo-tree").setup(opts)
