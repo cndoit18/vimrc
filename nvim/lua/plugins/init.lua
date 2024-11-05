@@ -4,13 +4,15 @@ local tools = {
 	"stylua",
 	"sqlfmt",
 	"shfmt",
-	"black",
 	"gofumpt",
 	"prettier",
 
 	-- Lint
 	"markdownlint",
 	"golangci-lint",
+
+	-- All
+	"ruff",
 }
 
 local lsp_servers = {
@@ -264,6 +266,9 @@ return {
 	{
 		"folke/trouble.nvim",
 		cmd = { "Trouble" },
+		init = function()
+			vim.diagnostic.config({ virtual_text = false })
+		end,
 		opts = {
 			auto_preview = false,
 			modes = {
@@ -482,6 +487,7 @@ return {
 				markdown = { "markdownlint" },
 				go = { "golangcilint" },
 				rust = { "clippy" },
+				python = { "ruff" },
 			}
 			local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
@@ -508,7 +514,7 @@ return {
 					lua = { require("formatter.filetypes.lua").stylua },
 					sql = { require("formatter.filetypes.sql").sqlfmt },
 					sh = { require("formatter.filetypes.sh").shfmt },
-					python = { require("formatter.filetypes.python").black },
+					python = { require("formatter.filetypes.python").ruff },
 					go = { require("formatter.filetypes.go").gofumpt },
 					rust = { require("formatter.filetypes.rust").rustfmt },
 
@@ -751,7 +757,6 @@ return {
 					capabilities = capabilities,
 				})
 			end
-			vim.diagnostic.config({ virtual_text = false })
 		end,
 	},
 
