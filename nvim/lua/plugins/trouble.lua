@@ -1,8 +1,12 @@
 return {
 	"folke/trouble.nvim",
+	dependencies = {
+		"nvim-lualine/lualine.nvim",
+	},
 	cmd = { "Trouble" },
 	init = function()
 		vim.diagnostic.config({ virtual_text = false })
+		table.insert(require("lualine").get_config().extensions, "trouble")
 	end,
 	opts = {
 		auto_preview = false,

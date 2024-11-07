@@ -216,27 +216,15 @@ return {
 	},
 
 	{
-		"folke/flash.nvim",
-		event = "VeryLazy",
-		opts = {
-			modes = {
-				char = {
-					jump_labels = true,
-				},
-				search = {
-					enabled = false,
-				},
-			},
-		},
-	},
-
-	{
 		"williamboman/mason.nvim",
 		lazy = false,
 		dependencies = {
-			"williamboman/mason-lspconfig.nvim",
-			module = "mason",
+			{ "williamboman/mason-lspconfig.nvim", module = "mason" },
+			{ "nvim-lualine/lualine.nvim" },
 		},
+		init = function()
+			table.insert(require("lualine").get_config().extensions, "mason")
+		end,
 		config = function()
 			require("mason").setup()
 			local registry = require("mason-registry")
@@ -279,22 +267,6 @@ return {
 	},
 
 	{
-		"nvim-lualine/lualine.nvim",
-		dependencies = {
-			"nvim-tree/nvim-web-devicons",
-		},
-		opts = {
-			theme = "gruvbox-material",
-		},
-		config = function(_, opts)
-			require("lualine").setup({
-				options = opts,
-				extensions = { "neo-tree", "lazy" },
-			})
-		end,
-	},
-
-	{
 		"folke/lazydev.nvim",
 		ft = "lua", -- only load on lua files
 		opts = {
@@ -317,61 +289,6 @@ return {
 		opts = {
 			current_line_blame = true,
 		},
-	},
-
-	{
-		"nvim-treesitter/nvim-treesitter",
-		build = ":TSUpdate",
-		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			---@diagnostic disable-next-line: missing-fields
-			require("nvim-treesitter.configs").setup({
-				ensure_installed = {
-					"bash",
-					"cmake",
-					"css",
-					"dockerfile",
-					"go",
-					"html",
-					"java",
-					"javascript",
-					"json",
-					"jsonc",
-					"lua",
-					"markdown",
-					"markdown_inline",
-					"python",
-					"regex",
-					"toml",
-					"vim",
-					"yaml",
-					"rust",
-				},
-				highlight = {
-					enable = true,
-				},
-				endwise = {
-					enable = true,
-				},
-				indent = { enable = true },
-				autopairs = { enable = true },
-			})
-		end,
-	},
-
-	{
-		"akinsho/toggleterm.nvim",
-		version = "*",
-		opts = {
-			open_mapping = [[<C-t>]],
-			terminal_mappings = true,
-			start_in_insert = true,
-		},
-		config = function(_, opts)
-			require("toggleterm").setup({
-				options = opts,
-			})
-		end,
 	},
 
 	{
@@ -490,31 +407,6 @@ return {
 				})
 			end
 		end,
-	},
-
-	{
-		"ibhagwan/fzf-lua",
-		-- optional for icon support
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		init = function()
-			vim.api.nvim_create_user_command("Rg", function(opts)
-				require("fzf-lua").live_grep({ search = opts.args })
-			end, {
-				nargs = "?",
-				desc = "Grep for text in files.",
-			})
-		end,
-		config = function()
-			-- calling `setup` is optional for customization
-			require("fzf-lua").setup({})
-		end,
-	},
-
-	{
-		"iamcco/markdown-preview.nvim",
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		ft = { "markdown" },
-		build = "cd app && yarn install",
 	},
 
 	{

@@ -4,6 +4,7 @@ return {
 	branch = "v3.x",
 	cmd = "Neotree",
 	dependencies = {
+		"nvim-lualine/lualine.nvim",
 		"nvim-lua/plenary.nvim",
 		"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 		"MunifTanjim/nui.nvim",
@@ -95,6 +96,9 @@ return {
 			["z"] = "none",
 		} },
 	},
+	init = function()
+		table.insert(require("lualine").get_config().extensions, "neo-tree")
+	end,
 	config = function(_, opts)
 		require("neo-tree").setup(opts)
 		vim.api.nvim_create_autocmd("TermClose", {
