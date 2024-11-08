@@ -2,7 +2,7 @@
 vim.g.mapleader = "\\"
 
 -- Configuration
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { noremap = true })
+vim.keymap.set("n", "<esc>", "<cmd>nohlsearch<cr><esc>", { noremap = true })
 
 vim.o.number = true
 vim.o.relativenumber = true
