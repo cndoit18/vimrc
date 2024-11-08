@@ -10,9 +10,11 @@ return {
 		vim.api.nvim_create_autocmd("ColorScheme", {
 			group = grpid,
 			pattern = "gruvbox-material",
-			command = "hi CursorLineNr                       guifg=#d8a657 |"
-				.. "hi LineNrAbove                        guifg=#765c3d |"
-				.. "hi LineNrBelow                        guifg=#88481e |",
+			command = [[
+				hi CursorLineNr                       guifg=#d8a657 |
+				hi LineNrAbove                        guifg=#765c3d |
+				hi LineNrBelow                        guifg=#88481e |
+				]],
 		})
 
 		local augroup = vim.api.nvim_create_augroup("numbertoggle", {})
