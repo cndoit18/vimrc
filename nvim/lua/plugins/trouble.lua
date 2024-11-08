@@ -7,6 +7,29 @@ return {
 	init = function()
 		vim.diagnostic.config({ virtual_text = false })
 		table.insert(require("lualine").get_config().extensions, "trouble")
+
+		local qfgroup = vim.api.nvim_create_augroup("changeQuickfix", { clear = true })
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "qf",
+			group = qfgroup,
+			command = "wincmd J",
+		})
+
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "qf",
+			group = qfgroup,
+			command = "setlocal wrap",
+		})
+
+		-- close quickfix menu after selecting choice
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = { "qf", "quickfix" },
+			command = [[
+				nnoremap <buffer> <CR> <CR>:cclose<CR>
+				nnoremap <buffer> k <Up><CR><C-w>p
+				nnoremap <buffer> j <Down><CR><C-w>p
+			]],
+		})
 	end,
 	opts = {
 		auto_preview = false,
@@ -23,6 +46,8 @@ return {
 		},
 	},
 	keys = {
+		{ "[g", vim.diagnostic.goto_prev },
+		{ "]g", vim.diagnostic.goto_next },
 		{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
 		{ "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
 		{ "<leader>cs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols (Trouble)" },
