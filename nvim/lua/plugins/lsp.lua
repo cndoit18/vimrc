@@ -66,6 +66,11 @@ return {
 						config.settings.python.pythonPath = get_python_path(config.root_dir)
 					end
 				end,
+				on_attach = function(client, bufnr)
+					if client and client.server_capabilities.inlayHintProvider then
+						vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+					end
+				end,
 			})
 		end
 	end,

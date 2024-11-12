@@ -17,6 +17,13 @@ return {
 				]],
 		})
 
+		vim.o.number = true
+		vim.o.relativenumber = true
+		vim.o.cursorline = true
+
+		vim.o.list = true
+		vim.o.listchars = [[tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%]]
+
 		local augroup = vim.api.nvim_create_augroup("numbertoggle", {})
 
 		vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "CmdlineLeave", "WinEnter" }, {
