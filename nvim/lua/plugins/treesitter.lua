@@ -2,6 +2,9 @@ return {
 	"nvim-treesitter/nvim-treesitter",
 	build = ":TSUpdate",
 	event = { "BufReadPre", "BufNewFile" },
+	init = function()
+		require("nvim-treesitter.query_predicates")
+	end,
 	config = function()
 		---@diagnostic disable-next-line: missing-fields
 		require("nvim-treesitter.configs").setup({
