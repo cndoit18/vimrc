@@ -23,7 +23,6 @@ return {
 ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
 ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
 ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
-
 ]]
 		local opts = {
 			theme = "doom",
@@ -36,19 +35,13 @@ return {
 				header = center_header(vim.split(logo, "\n")),
 				center = {
 					{
-						icon = " ",
-						icon_hl = "@variable",
+						icon = " ",
 						desc = "Files",
 						action = "Telescope find_files",
 						key = "f",
 					},
-					{
-						action = "ene | startinsert",
-						desc = "New File",
-						icon = " ",
-						key = "n",
-					},
-					{ desc = "󰊳 Update", action = "Lazy update", key = "u" },
+					{ action = "ene | startinsert", desc = "New File", icon = " ", key = "n" },
+					{ desc = "Lazy", icon = "󰒲 ", action = "Lazy update", key = "u" },
 					{
 						action = function()
 							vim.api.nvim_input("<cmd>qa<cr>")
