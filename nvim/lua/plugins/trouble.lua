@@ -26,8 +26,8 @@ return {
 			pattern = { "qf", "quickfix" },
 			command = [[
 				nnoremap <buffer> <CR> <CR>:cclose<CR>
-				nnoremap <buffer> k <Up><CR><C-w>p
-				nnoremap <buffer> j <Down><CR><C-w>p
+				nnoremap <buffer> k <Up><CR>zz<C-w>p
+				nnoremap <buffer> j <Down><CR>zz<C-w>p
 			]],
 		})
 	end,
