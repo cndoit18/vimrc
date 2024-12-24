@@ -8,6 +8,7 @@ local lsp_servers = {
 	"pyright",
 	"lua_ls",
 	"yamlls",
+	"harper_ls",
 }
 
 return {
@@ -64,6 +65,9 @@ return {
 				before_init = function(_, config)
 					if lsp == "pyright" then
 						config.settings.python.pythonPath = get_python_path(config.root_dir)
+					end
+					if lsp == "harper_ls" then
+						config.settings["harper-ls"] = { userDictPath = vim.fn.stdpath("data") .. "/user_dict.txt" }
 					end
 				end,
 				on_attach = function(client, bufnr)
